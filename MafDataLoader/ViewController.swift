@@ -51,7 +51,6 @@ class ViewController: UIViewController {
         if mafDataConnectButton.titleLabel?.text == "Connect" {
             if BleManager.Ble.isPeripheralSelected {
                 BleManager.Ble.connectSelectedPeripheral()
-                mafDataConnectButton.setTitle("Disconnect", for: .normal)
             }
             else {
                 let alert = UIAlertController(title: "MafDataLoader", message: "Ble device is not selected.", preferredStyle: .alert)
@@ -79,9 +78,16 @@ class ViewController: UIViewController {
         if let data = notification.object as? String {
             switch data {
             case "NewBleData":
-                if let string = String(bytes: BleManager.Ble.peripheralData, encoding: .windowsCP1251) {
+             /*   if let string = String(bytes: BleManager.Ble.peripheralData, encoding: .windowsCP1251) {
                     mafDataText.text = string
+                }*/
+                var dataString: String = ""
+                
+                for dataByte in BleManager.Ble.peripheralData {
+                    dataString.append(String(format: "0x%02X ", dataByte))
                 }
+                
+                mafDataText.text = dataString
             case "SelectedBleConnected":
                 mafDataConnectButton.setTitle("Disconnect", for: .normal)
                 mafDataReadButton.isEnabled = true
