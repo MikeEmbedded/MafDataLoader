@@ -20,12 +20,12 @@
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Lbz-Hs-15F">
                                 <rect key="frame" x="0.0" y="88" width="297.5" height="31"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CcV-ER-Pgg">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S17-Kd-44B">
                                         <rect key="frame" x="0.0" y="0.0" width="92.5" height="31"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="gray" title="Connect"/>
                                         <connections>
-                                            <action selector="peripheralConnect:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zBa-33-Wmq"/>
+                                            <action selector="mafDataConnect:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RHq-lb-gyy"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lTW-FJ-T6p">
@@ -40,6 +40,9 @@
                                         <rect key="frame" x="205" y="0.0" width="92.5" height="31"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="gray" title="Write Data"/>
+                                        <connections>
+                                            <action selector="mafDataWrite:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Xgs-6d-h4V"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -70,6 +73,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="mafDataConnectButton" destination="S17-Kd-44B" id="9Bk-HT-9F0"/>
                         <outlet property="mafDataReadButton" destination="lTW-FJ-T6p" id="6GO-tP-kmQ"/>
                         <outlet property="mafDataText" destination="fBA-WR-NML" id="wRS-cd-MLR"/>
                         <outlet property="mafDataWriteButton" destination="CVl-e6-E9j" id="VLh-Eh-Tij"/>

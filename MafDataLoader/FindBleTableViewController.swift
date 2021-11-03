@@ -28,7 +28,7 @@ class FindBleTableViewController: UITableViewController, UINavigationControllerD
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        observer = NotificationCenter.default.addObserver(forName: Notification.Name("NewBlePeripheralDiscovered"), object: nil, queue: nil, using: addDiscoveredPeripheralNameToTableView)
+        observer = NotificationCenter.default.addObserver(forName: .peripheralNotifications, object: nil, queue: nil, using: addDiscoveredPeripheralNameToTableView)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -153,7 +153,9 @@ class FindBleTableViewController: UITableViewController, UINavigationControllerD
     
     //MARK: Private Methods
     private func addDiscoveredPeripheralNameToTableView(notification: Notification) {
-        let indexPath = IndexPath(row: BleManager.Ble.getPeripheralsCount() - 1, section: 0)
-        tableView.insertRows(at: [indexPath], with: .automatic)
+        if let data = notification.object as? String, data == "NewBleAdded" {
+            let indexPath = IndexPath(row: BleManager.Ble.getPeripheralsCount() - 1, section: 0)
+            tableView.insertRows(at: [indexPath], with: .automatic)
+        }
     }
 }

@@ -8,6 +8,10 @@
 import Foundation
 import CoreBluetooth
 
+extension Notification.Name {
+    static let peripheralNotifications = Notification.Name("peripheralNotifications")
+}
+
 struct CBUUIDs {
     static let kBLE_Service_UUID = "FFE0"
     static let kBLE_Characteristic_UUID = "FFE1"
@@ -22,9 +26,10 @@ class BleManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     private var centralManager: CBCentralManager?
     public  var centralManagerState: CBManagerState = .poweredOff
     private var peripherals: [CBPeripheral] = []
-    private var selectedPeripheral: CBPeripheral?
-    public var  isPeripheralSelected: Bool = false
-    private var isPeripheralConnected: Bool = false
+    private var selectedPeripheral: CBPeripheral!
+    private var selectedCharacteristic: CBCharacteristic!
+    public  var isPeripheralSelected: Bool = false
+    public  var isPeripheralConnected: Bool = false
     
     public var peripheralData: [UInt8] = []
 
@@ -42,17 +47,18 @@ class BleManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     internal func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         if !peripherals.contains(peripheral) {
             peripherals.append(peripheral)
-            NotificationCenter.default.post(name: Notification.Name("NewBlePeripheralDiscovered"), object: nil)
+            NotificationCenter.default.post(name: .peripheralNotifications, object: "NewBleAdded")
         }
     }
     
     internal func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
         isPeripheralConnected = false
+        NotificationCenter.default.post(name: .peripheralNotifications, object: "SelectedBleDisconnected")
     }
     
     internal func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        selectedPeripheral?.delegate = self
-        selectedPeripheral?.discoverServices([CBUUIDs.BLE_Service_UUID])
+        selectedPeripheral.delegate = self
+        selectedPeripheral.discoverServices([CBUUIDs.BLE_Service_UUID])
     }
     
     internal func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
@@ -63,7 +69,7 @@ class BleManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
             
             for service in services {
                 if (service.uuid == CBUUIDs.BLE_Service_UUID) {
-                    selectedPeripheral?.discoverCharacteristics([CBUUIDs.BLE_Characteristic_UUID], for: service)
+                    peripheral.discoverCharacteristics([CBUUIDs.BLE_Characteristic_UUID], for: service)
                 }
             }
         }
@@ -76,8 +82,10 @@ class BleManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                     if characteristic.uuid == CBUUIDs.BLE_Characteristic_UUID {
                         isPeripheralConnected = true
                         peripheralData.removeAll()
+                        selectedCharacteristic = characteristic
                         // Subscribe to a characteristic value
-                        selectedPeripheral?.setNotifyValue(true, for: characteristic)
+                        peripheral.setNotifyValue(true, for: characteristic)
+                        NotificationCenter.default.post(name: .peripheralNotifications, object: "SelectedBleConnected")
                     }
                 }
             }
@@ -90,7 +98,7 @@ class BleManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                 if let data = characteristic.value {
                     for Byte in data {
                         peripheralData.append(Byte)
-                        NotificationCenter.default.post(name: Notification.Name("NewBlePeripheralData"), object: nil)
+                        NotificationCenter.default.post(name: .peripheralNotifications, object: "NewBleData")
                     }
                 }
             }
@@ -139,6 +147,26 @@ class BleManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     func connectSelectedPeripheral() {
         if isPeripheralSelected {
             centralManager?.connect(selectedPeripheral!, options: nil)
+        }
+    }
+    
+    func disconnectSelectedPeripheral() {
+        if isPeripheralConnected {
+            centralManager?.cancelPeripheralConnection(selectedPeripheral)
+        }
+    }
+    
+    func peripheralRead() {
+        
+    }
+    
+    func peripheralWrite(string: String) {
+        if isPeripheralConnected {
+            guard let dataToWrite = string.data(using: .windowsCP1251) else {
+                return
+            }
+            
+            selectedPeripheral?.writeValue(dataToWrite, for: selectedCharacteristic, type: .withoutResponse)
         }
     }
 }
