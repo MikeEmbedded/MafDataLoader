@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8B49B8B3272738070053EEBE /* BLE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B49B8B2272738070053EEBE /* BLE.swift */; };
+		8BB826162733E2FE008B88B1 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 8BB826152733E2FE008B88B1 /* Charts */; };
 		8BF9DC732721EE1700F420E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9DC722721EE1700F420E6 /* AppDelegate.swift */; };
 		8BF9DC752721EE1700F420E6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9DC742721EE1700F420E6 /* SceneDelegate.swift */; };
 		8BF9DC772721EE1700F420E6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9DC762721EE1700F420E6 /* ViewController.swift */; };
@@ -35,17 +36,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BB826162733E2FE008B88B1 /* Charts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8BB826112733E02A008B88B1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8BF9DC662721EE1700F420E6 = {
 			isa = PBXGroup;
 			children = (
 				8BF9DC712721EE1700F420E6 /* MafDataLoader */,
 				8BF9DC702721EE1700F420E6 /* Products */,
+				8BB826112733E02A008B88B1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -89,6 +99,9 @@
 			dependencies = (
 			);
 			name = MafDataLoader;
+			packageProductDependencies = (
+				8BB826152733E2FE008B88B1 /* Charts */,
+			);
 			productName = MafDataLoader;
 			productReference = 8BF9DC6F2721EE1700F420E6 /* MafDataLoader.app */;
 			productType = "com.apple.product-type.application";
@@ -117,6 +130,9 @@
 				Base,
 			);
 			mainGroup = 8BF9DC662721EE1700F420E6;
+			packageReferences = (
+				8BB826142733E2FE008B88B1 /* XCRemoteSwiftPackageReference "Charts" */,
+			);
 			productRefGroup = 8BF9DC702721EE1700F420E6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -232,6 +248,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = "";
 			};
 			name = Debug;
 		};
@@ -286,6 +303,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -306,7 +324,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -336,7 +354,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -372,6 +390,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8BB826142733E2FE008B88B1 /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts.git";
+			requirement = {
+				kind = exactVersion;
+				version = 3.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8BB826152733E2FE008B88B1 /* Charts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8BB826142733E2FE008B88B1 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = Charts;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8BF9DC672721EE1700F420E6 /* Project object */;
 }

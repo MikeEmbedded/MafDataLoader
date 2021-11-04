@@ -46,23 +46,20 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fBA-WR-NML">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Cw-Ol-G3q" customClass="LineChartView" customModule="Charts">
                                 <rect key="frame" x="0.0" y="119" width="414" height="743"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <color key="textColor" systemColor="labelColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="fBA-WR-NML" firstAttribute="top" secondItem="Lbz-Hs-15F" secondAttribute="bottom" id="AGm-MV-EtU"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="0Cw-Ol-G3q" secondAttribute="bottom" id="CMZ-we-v53"/>
                             <constraint firstItem="Lbz-Hs-15F" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Mhe-wO-6uI"/>
-                            <constraint firstItem="fBA-WR-NML" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="cDd-Yi-aRl"/>
+                            <constraint firstItem="0Cw-Ol-G3q" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="TZs-Ie-YVy"/>
+                            <constraint firstItem="0Cw-Ol-G3q" firstAttribute="top" secondItem="Lbz-Hs-15F" secondAttribute="bottom" id="WdR-Fh-AfB"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="0Cw-Ol-G3q" secondAttribute="trailing" id="Xaf-0h-P4w"/>
                             <constraint firstItem="Lbz-Hs-15F" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="gBb-Xe-Hhn"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fBA-WR-NML" secondAttribute="trailing" id="m0P-f6-gFf"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="fBA-WR-NML" secondAttribute="bottom" id="o5m-9i-UlI"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="MafDataLoader" id="CUq-mA-VFL">
@@ -73,9 +70,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="lineChartView" destination="0Cw-Ol-G3q" id="edP-cA-kHz"/>
                         <outlet property="mafDataConnectButton" destination="S17-Kd-44B" id="9Bk-HT-9F0"/>
                         <outlet property="mafDataReadButton" destination="lTW-FJ-T6p" id="6GO-tP-kmQ"/>
-                        <outlet property="mafDataText" destination="fBA-WR-NML" id="wRS-cd-MLR"/>
                         <outlet property="mafDataWriteButton" destination="CVl-e6-E9j" id="VLh-Eh-Tij"/>
                     </connections>
                 </viewController>
@@ -150,9 +147,6 @@
         </scene>
     </scenes>
     <resources>
-        <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
