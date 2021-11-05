@@ -31,23 +31,31 @@ class ViewController: UIViewController, ChartViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
         //lineChartView.backgroundColor = .systemBlue
         lineChartDataSet = LineChartDataSet(entries: yValues, label: "mafData")
         
         lineChartDataSet.lineWidth = 2
-        lineChartDataSet.setColor(.black)
+        lineChartDataSet.setColor(.systemBlue)
         lineChartDataSet.highlightColor = .systemRed
+        lineChartDataSet.valueFormatter = LineChartDataSetValueFormatter()
+        lineChartDataSet.valueFont = .boldSystemFont(ofSize: 12)
         
         lineChartData = LineChartData(dataSet: lineChartDataSet)
         lineChartView.data = lineChartData
         
+        lineChartView.legend.enabled = false
         lineChartView.rightAxis.enabled = false
         
         lineChartView.leftAxis.labelFont = .boldSystemFont(ofSize: 12)
         lineChartView.leftAxis.labelPosition = .outsideChart
+     //   lineChartView.leftAxis.spaceBottom = CGFloat(0)
+     //   lineChartView.leftAxis.valueFormatter = LineChartViewAxisValueFormatter()
         
         lineChartView.xAxis.labelPosition = .bottom
         lineChartView.xAxis.labelFont = .boldSystemFont(ofSize: 12)
+        lineChartView.xAxis.setLabelCount(xAxisLabelCountCalc(count: yValues.count), force: true)
+     //   lineChartView.xAxis.valueFormatter = LineChartViewAxisValueFormatter()
         
         lineChartView.animate(xAxisDuration: 1.5)
     }
@@ -96,6 +104,11 @@ class ViewController: UIViewController, ChartViewDelegate {
     }
     
     @IBAction func mafDataRead(_ sender: UIButton) {
+        BleManager.Ble.peripheralData.removeAll()
+        lineChartDataSet.removeAll(keepingCapacity: true)
+        lineChartDataSet.append(ChartDataEntry(x: 0, y: 0))
+        lineChartData.notifyDataChanged()
+        lineChartView.notifyDataSetChanged()
     }
     
     @IBAction func mafDataWrite(_ sender: UIButton) {
@@ -112,17 +125,14 @@ class ViewController: UIViewController, ChartViewDelegate {
         if let data = notification.object as? String {
             switch data {
             case "NewBleData":
-                return
-             /*   if let string = String(bytes: BleManager.Ble.peripheralData, encoding: .windowsCP1251) {
-                    mafDataText.text = string
-                }*/
-             /*   var dataString: String = ""
-                
-                for dataByte in BleManager.Ble.peripheralData {
-                    dataString.append(String(format: "0x%02X ", dataByte))
+                lineChartDataSet.removeAll(keepingCapacity: false)
+                for i in 0..<BleManager.Ble.peripheralData.count {
+                    lineChartDataSet.append(ChartDataEntry(x: Double(i), y: Double(BleManager.Ble.peripheralData[i])))
                 }
                 
-                mafDataText.text = dataString */
+                lineChartData.notifyDataChanged()
+                lineChartView.notifyDataSetChanged()
+                lineChartView.animate(xAxisDuration: 1.5)
             case "SelectedBleConnected":
                 mafDataConnectButton.setTitle("Disconnect", for: .normal)
                 mafDataReadButton.isEnabled = true
@@ -142,5 +152,32 @@ class ViewController: UIViewController, ChartViewDelegate {
             }
         }
     }
+    
+    private func xAxisLabelCountCalc(count: Int) -> Int {
+        
+        switch count {
+        case 0:
+            return 2
+        case 1..<10:
+            return count
+        default:
+            if (count % 10) < 5 {
+                return 5
+            }
+            
+            return count % 10
+        }
+    }
 }
 
+class LineChartDataSetValueFormatter: IValueFormatter {
+    func stringForValue(_ value: Double, entry: ChartDataEntry, dataSetIndex: Int, viewPortHandler: ViewPortHandler?) -> String {
+        return String(Int(value))
+    }
+}
+
+class LineChartViewAxisValueFormatter: IAxisValueFormatter {
+    func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+        return String(Int(value))
+    }
+}

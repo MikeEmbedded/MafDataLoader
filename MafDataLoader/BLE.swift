@@ -81,7 +81,6 @@ class BleManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
                 for characteristic in characteristics {
                     if characteristic.uuid == CBUUIDs.BLE_Characteristic_UUID {
                         isPeripheralConnected = true
-                        peripheralData.removeAll()
                         selectedCharacteristic = characteristic
                         // Subscribe to a characteristic value
                         peripheral.setNotifyValue(true, for: characteristic)
@@ -95,11 +94,11 @@ class BleManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     internal func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         if error == nil {
             if (peripheral == selectedPeripheral) && (characteristic.uuid == CBUUIDs.BLE_Characteristic_UUID) {
-                if let data = characteristic.value {
-                    for Byte in data {
-                        peripheralData.append(Byte)
-                        NotificationCenter.default.post(name: .peripheralNotifications, object: "NewBleData")
+                if let datas = characteristic.value {
+                    for data in datas {
+                        peripheralData.append(data)
                     }
+                    NotificationCenter.default.post(name: .peripheralNotifications, object: "NewBleData")
                 }
             }
         }
