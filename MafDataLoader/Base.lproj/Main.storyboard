@@ -46,7 +46,7 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Cw-Ol-G3q" customClass="LineChartView" customModule="Charts">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Cw-Ol-G3q" customClass="MyLineCharView" customModule="MafDataLoader" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="119" width="414" height="743"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
@@ -70,7 +70,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="lineChartView" destination="0Cw-Ol-G3q" id="edP-cA-kHz"/>
+                        <outlet property="lineChartView" destination="0Cw-Ol-G3q" id="r1P-M9-a1h"/>
                         <outlet property="mafDataConnectButton" destination="S17-Kd-44B" id="9Bk-HT-9F0"/>
                         <outlet property="mafDataReadButton" destination="lTW-FJ-T6p" id="6GO-tP-kmQ"/>
                         <outlet property="mafDataWriteButton" destination="CVl-e6-E9j" id="VLh-Eh-Tij"/>

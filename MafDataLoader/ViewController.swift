@@ -15,7 +15,8 @@ class ViewController: UIViewController, ChartViewDelegate {
     @IBOutlet weak var mafDataReadButton: UIButton!
     @IBOutlet weak var mafDataWriteButton: UIButton!
 //    @IBOutlet weak var mafDataText: UITextView!
-    @IBOutlet weak var lineChartView: LineChartView!
+    @IBOutlet weak var lineChartView: MyLineCharView!
+    
     
     private var observer: NSObjectProtocol!
     
@@ -32,7 +33,11 @@ class ViewController: UIViewController, ChartViewDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        //lineChartView.backgroundColor = .systemBlue
+ //       let pan = UIPanGestureRecognizer(target: self, action: #selector(lineChartGestureRecognizer))
+ //       lineChartView.addGestureRecognizer(pan)
+        lineChartView.delegate = self
+        
+        
         lineChartDataSet = LineChartDataSet(entries: yValues, label: "mafData")
         
         lineChartDataSet.lineWidth = 2
@@ -56,6 +61,7 @@ class ViewController: UIViewController, ChartViewDelegate {
         lineChartView.xAxis.labelFont = .boldSystemFont(ofSize: 12)
         lineChartView.xAxis.setLabelCount(xAxisLabelCountCalc(count: yValues.count), force: true)
      //   lineChartView.xAxis.valueFormatter = LineChartViewAxisValueFormatter()
+        lineChartView.dragEnabled = true
         
         lineChartView.animate(xAxisDuration: 1.5)
     }
@@ -118,7 +124,31 @@ class ViewController: UIViewController, ChartViewDelegate {
     //MARK: Line Chart Delegates
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
         print(entry)
+        
+        
     }
+    
+    func chartViewDidEndPanning(_ chartView: ChartViewBase) {
+        print("Did end panning")
+    }
+    
+ /*   @objc func lineChartGestureRecognizer(_ recognizer: UIPanGestureRecognizer) {
+      //  print(recognizer.state)
+        
+        switch recognizer.state {
+        case .began:
+            print("pann began")
+            
+            if let marker = self.lineChartView.marker as? MarkerView {
+                let location = recognizer.location(in: lineChartView)
+            }
+        case .changed:
+            print("pann changed")
+        default:
+            print("pann default")
+        }
+        
+    } */
     
     //MARK: Private Methods
     private func peripheralDataNotifications(notification: Notification) {
@@ -180,4 +210,28 @@ class LineChartViewAxisValueFormatter: IAxisValueFormatter {
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
         return String(Int(value))
     }
+}
+
+class MyLineCharView: LineChartView {
+    internal func initialize() {
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(lineChartGestureRecognizer))
+        self.addGestureRecognizer(pan)
+    }
+    
+    @objc func lineChartGestureRecognizer(_ recognizer: UIPanGestureRecognizer) {
+        switch recognizer.state {
+        case .began:
+            print("pann began")
+            
+            if let marker = self.marker as? MarkerView {
+                let location = recognizer.location(in: self)
+            }
+        case .changed:
+            print("pann changed")
+        default:
+            print("pann default")
+        }
+        
+    }
+
 }
