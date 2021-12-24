@@ -3,4 +3,22 @@
    uuid = "3770E1AE-4293-4DAC-9E54-3EF5C9A37B52"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A8E1DC9D-8B7B-4297-A8BB-B17DA0FB9C41"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../../Library/Developer/Xcode/DerivedData/MafDataLoader-ahuchmxgtisulpghqasszzjapnla/SourcePackages/checkouts/Charts/Source/Charts/Charts/BarLineChartViewBase.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "686"
+            endingLineNumber = "686"
+            landmarkName = "panGestureRecognized(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

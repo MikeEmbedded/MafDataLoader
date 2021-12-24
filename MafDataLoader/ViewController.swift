@@ -9,13 +9,16 @@ import UIKit
 import CoreBluetooth
 import OSLog
 import Charts
+import Foundation
+import CoreGraphics
 
 class ViewController: UIViewController, ChartViewDelegate {
     @IBOutlet weak var mafDataConnectButton: UIButton!
     @IBOutlet weak var mafDataReadButton: UIButton!
     @IBOutlet weak var mafDataWriteButton: UIButton!
 //    @IBOutlet weak var mafDataText: UITextView!
-    @IBOutlet weak var lineChartView: MyLineCharView!
+//    @IBOutlet weak var lineChartView: LineChartView!
+    @IBOutlet weak var lineChart: MyNewLineChart!
     
     
     private var observer: NSObjectProtocol!
@@ -32,10 +35,13 @@ class ViewController: UIViewController, ChartViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        let dataEntries = generateRandomEntries()
+        lineChart.dataEntries = dataEntries
+        lineChart.isCurved = true
         
- //       let pan = UIPanGestureRecognizer(target: self, action: #selector(lineChartGestureRecognizer))
+/* //       let pan = UIPanGestureRecognizer(target: self, action: #selector(lineChartGestureRecognizer))
  //       lineChartView.addGestureRecognizer(pan)
-        lineChartView.delegate = self
+     //   lineChartView.delegate = self
         
         
         lineChartDataSet = LineChartDataSet(entries: yValues, label: "mafData")
@@ -63,7 +69,22 @@ class ViewController: UIViewController, ChartViewDelegate {
      //   lineChartView.xAxis.valueFormatter = LineChartViewAxisValueFormatter()
         lineChartView.dragEnabled = true
         
-        lineChartView.animate(xAxisDuration: 1.5)
+        lineChartView.animate(xAxisDuration: 1.5)*/
+    }
+    
+    private func generateRandomEntries() -> [PointEntry] {
+            var result: [PointEntry] = []
+            for i in 0..<100 {
+                let value = Int(arc4random() % 500)
+                
+                let formatter = DateFormatter()
+                formatter.dateFormat = "d MMM"
+                var date = Date()
+                date.addTimeInterval(TimeInterval(24*60*60*i))
+                
+                result.append(PointEntry(value: value, label: formatter.string(from: date)))
+            }
+            return result
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -111,10 +132,10 @@ class ViewController: UIViewController, ChartViewDelegate {
     
     @IBAction func mafDataRead(_ sender: UIButton) {
         BleManager.Ble.peripheralData.removeAll()
-        lineChartDataSet.removeAll(keepingCapacity: true)
+  /*      lineChartDataSet.removeAll(keepingCapacity: true)
         lineChartDataSet.append(ChartDataEntry(x: 0, y: 0))
         lineChartData.notifyDataChanged()
-        lineChartView.notifyDataSetChanged()
+        lineChartView.notifyDataSetChanged() */
     }
     
     @IBAction func mafDataWrite(_ sender: UIButton) {
@@ -154,7 +175,7 @@ class ViewController: UIViewController, ChartViewDelegate {
     private func peripheralDataNotifications(notification: Notification) {
         if let data = notification.object as? String {
             switch data {
-            case "NewBleData":
+           /* case "NewBleData":
                 lineChartDataSet.removeAll(keepingCapacity: false)
                 for i in 0..<BleManager.Ble.peripheralData.count {
                     lineChartDataSet.append(ChartDataEntry(x: Double(i), y: Double(BleManager.Ble.peripheralData[i])))
@@ -162,7 +183,7 @@ class ViewController: UIViewController, ChartViewDelegate {
                 
                 lineChartData.notifyDataChanged()
                 lineChartView.notifyDataSetChanged()
-                lineChartView.animate(xAxisDuration: 1.5)
+                lineChartView.animate(xAxisDuration: 1.5)*/
             case "SelectedBleConnected":
                 mafDataConnectButton.setTitle("Disconnect", for: .normal)
                 mafDataReadButton.isEnabled = true
@@ -210,28 +231,4 @@ class LineChartViewAxisValueFormatter: IAxisValueFormatter {
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
         return String(Int(value))
     }
-}
-
-class MyLineCharView: LineChartView {
-    internal func initialize() {
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(lineChartGestureRecognizer))
-        self.addGestureRecognizer(pan)
-    }
-    
-    @objc func lineChartGestureRecognizer(_ recognizer: UIPanGestureRecognizer) {
-        switch recognizer.state {
-        case .began:
-            print("pann began")
-            
-            if let marker = self.marker as? MarkerView {
-                let location = recognizer.location(in: self)
-            }
-        case .changed:
-            print("pann changed")
-        default:
-            print("pann default")
-        }
-        
-    }
-
 }

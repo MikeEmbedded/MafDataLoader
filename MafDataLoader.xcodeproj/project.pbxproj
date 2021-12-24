@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8B49B8B3272738070053EEBE /* BLE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B49B8B2272738070053EEBE /* BLE.swift */; };
 		8BB826162733E2FE008B88B1 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 8BB826152733E2FE008B88B1 /* Charts */; };
+		8BF7FFF9276A348C00F45FF5 /* MyLineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7FFF8276A348C00F45FF5 /* MyLineChart.swift */; };
 		8BF9DC732721EE1700F420E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9DC722721EE1700F420E6 /* AppDelegate.swift */; };
 		8BF9DC752721EE1700F420E6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9DC742721EE1700F420E6 /* SceneDelegate.swift */; };
 		8BF9DC772721EE1700F420E6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9DC762721EE1700F420E6 /* ViewController.swift */; };
@@ -16,10 +17,12 @@
 		8BF9DC7C2721EE1C00F420E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8BF9DC7B2721EE1C00F420E6 /* Assets.xcassets */; };
 		8BF9DC7F2721EE1C00F420E6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BF9DC7D2721EE1C00F420E6 /* LaunchScreen.storyboard */; };
 		8BF9DC872721F4B600F420E6 /* FindBleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9DC862721F4B600F420E6 /* FindBleTableViewController.swift */; };
+		8BFBC7B727635BA20055E2FE /* MyLineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFBC7B627635BA20055E2FE /* MyLineChartView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		8B49B8B2272738070053EEBE /* BLE.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLE.swift; sourceTree = "<group>"; };
+		8BF7FFF8276A348C00F45FF5 /* MyLineChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLineChart.swift; sourceTree = "<group>"; };
 		8BF9DC6F2721EE1700F420E6 /* MafDataLoader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MafDataLoader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BF9DC722721EE1700F420E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8BF9DC742721EE1700F420E6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -29,6 +32,7 @@
 		8BF9DC7E2721EE1C00F420E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8BF9DC802721EE1C00F420E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8BF9DC862721F4B600F420E6 /* FindBleTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindBleTableViewController.swift; sourceTree = "<group>"; };
+		8BFBC7B627635BA20055E2FE /* MyLineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLineChartView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,12 +77,14 @@
 				8BF9DC722721EE1700F420E6 /* AppDelegate.swift */,
 				8BF9DC742721EE1700F420E6 /* SceneDelegate.swift */,
 				8BF9DC762721EE1700F420E6 /* ViewController.swift */,
+				8BF7FFF8276A348C00F45FF5 /* MyLineChart.swift */,
 				8BF9DC782721EE1800F420E6 /* Main.storyboard */,
 				8BF9DC862721F4B600F420E6 /* FindBleTableViewController.swift */,
 				8B49B8B2272738070053EEBE /* BLE.swift */,
 				8BF9DC7B2721EE1C00F420E6 /* Assets.xcassets */,
 				8BF9DC7D2721EE1C00F420E6 /* LaunchScreen.storyboard */,
 				8BF9DC802721EE1C00F420E6 /* Info.plist */,
+				8BFBC7B627635BA20055E2FE /* MyLineChartView.swift */,
 			);
 			path = MafDataLoader;
 			sourceTree = "<group>";
@@ -161,6 +167,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B49B8B3272738070053EEBE /* BLE.swift in Sources */,
+				8BFBC7B727635BA20055E2FE /* MyLineChartView.swift in Sources */,
+				8BF7FFF9276A348C00F45FF5 /* MyLineChart.swift in Sources */,
 				8BF9DC872721F4B600F420E6 /* FindBleTableViewController.swift in Sources */,
 				8BF9DC772721EE1700F420E6 /* ViewController.swift in Sources */,
 				8BF9DC732721EE1700F420E6 /* AppDelegate.swift in Sources */,
