@@ -10,5 +10,13 @@
             </PersistentString>
          </PersistentStrings>
       </ContextState>
+      <ContextState
+         contextName = "MyNewLineChart.handlePan(gesture:):MyLineChart.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "dotDataPoint">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
    </ContextStates>
 </VariablesViewState>

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8B49B8B3272738070053EEBE /* BLE.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B49B8B2272738070053EEBE /* BLE.swift */; };
-		8BB826162733E2FE008B88B1 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 8BB826152733E2FE008B88B1 /* Charts */; };
 		8BF7FFF9276A348C00F45FF5 /* MyLineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF7FFF8276A348C00F45FF5 /* MyLineChart.swift */; };
 		8BF9DC732721EE1700F420E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9DC722721EE1700F420E6 /* AppDelegate.swift */; };
 		8BF9DC752721EE1700F420E6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF9DC742721EE1700F420E6 /* SceneDelegate.swift */; };
@@ -40,7 +39,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BB826162733E2FE008B88B1 /* Charts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,7 +104,6 @@
 			);
 			name = MafDataLoader;
 			packageProductDependencies = (
-				8BB826152733E2FE008B88B1 /* Charts */,
 			);
 			productName = MafDataLoader;
 			productReference = 8BF9DC6F2721EE1700F420E6 /* MafDataLoader.app */;
@@ -137,7 +134,6 @@
 			);
 			mainGroup = 8BF9DC662721EE1700F420E6;
 			packageReferences = (
-				8BB826142733E2FE008B88B1 /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = 8BF9DC702721EE1700F420E6 /* Products */;
 			projectDirPath = "";
@@ -398,25 +394,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		8BB826142733E2FE008B88B1 /* XCRemoteSwiftPackageReference "Charts" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/danielgindi/Charts.git";
-			requirement = {
-				kind = exactVersion;
-				version = 3.6.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		8BB826152733E2FE008B88B1 /* Charts */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8BB826142733E2FE008B88B1 /* XCRemoteSwiftPackageReference "Charts" */;
-			productName = Charts;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8BF9DC672721EE1700F420E6 /* Project object */;
 }

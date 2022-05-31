@@ -12,7 +12,7 @@ import Charts
 import Foundation
 import CoreGraphics
 
-class ViewController: UIViewController, ChartViewDelegate {
+class ViewController: UIViewController/*, ChartViewDelegate*/ {
     @IBOutlet weak var mafDataConnectButton: UIButton!
     @IBOutlet weak var mafDataReadButton: UIButton!
     @IBOutlet weak var mafDataWriteButton: UIButton!
@@ -23,21 +23,28 @@ class ViewController: UIViewController, ChartViewDelegate {
     
     private var observer: NSObjectProtocol!
     
-    let yValues: [ChartDataEntry] = [
+   /* let yValues: [ChartDataEntry] = [
                     ChartDataEntry(x: 0, y: 1),
                     ChartDataEntry(x: 1, y: 2),
                     ChartDataEntry(x: 2, y: 3),
                     ChartDataEntry(x: 3, y: 4)]
     
     var lineChartDataSet: LineChartDataSet!
-    var lineChartData: LineChartData!
+    var lineChartData: LineChartData!*/
     
+    let chartDemoValues: [PointEntry] = [PointEntry(value: 0, label: "1"),
+                                     PointEntry(value: 1, label: "2"),
+                                     PointEntry(value: 2, label: "3"),
+                                     PointEntry(value: 4, label: "4")]
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        let dataEntries = generateRandomEntries()
-        lineChart.dataEntries = dataEntries
-        lineChart.isCurved = true
+        lineChart.isCurved = false
+        lineChart.showDots = true
+        lineChart.dataEntries = chartDemoValues
+        lineChart.isUserInteractionEnabled = true
+
         
 /* //       let pan = UIPanGestureRecognizer(target: self, action: #selector(lineChartGestureRecognizer))
  //       lineChartView.addGestureRecognizer(pan)
@@ -70,21 +77,6 @@ class ViewController: UIViewController, ChartViewDelegate {
         lineChartView.dragEnabled = true
         
         lineChartView.animate(xAxisDuration: 1.5)*/
-    }
-    
-    private func generateRandomEntries() -> [PointEntry] {
-            var result: [PointEntry] = []
-            for i in 0..<100 {
-                let value = Int(arc4random() % 500)
-                
-                let formatter = DateFormatter()
-                formatter.dateFormat = "d MMM"
-                var date = Date()
-                date.addTimeInterval(TimeInterval(24*60*60*i))
-                
-                result.append(PointEntry(value: value, label: formatter.string(from: date)))
-            }
-            return result
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -143,7 +135,7 @@ class ViewController: UIViewController, ChartViewDelegate {
     }
     
     //MARK: Line Chart Delegates
-    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+/*    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
         print(entry)
         
         
@@ -151,7 +143,7 @@ class ViewController: UIViewController, ChartViewDelegate {
     
     func chartViewDidEndPanning(_ chartView: ChartViewBase) {
         print("Did end panning")
-    }
+    }*/
     
  /*   @objc func lineChartGestureRecognizer(_ recognizer: UIPanGestureRecognizer) {
       //  print(recognizer.state)
@@ -184,6 +176,14 @@ class ViewController: UIViewController, ChartViewDelegate {
                 lineChartData.notifyDataChanged()
                 lineChartView.notifyDataSetChanged()
                 lineChartView.animate(xAxisDuration: 1.5)*/
+            case "NewBleData":
+                var newChartValues: [PointEntry] = []
+                
+                for i in 0..<BleManager.Ble.peripheralData.count {
+                    newChartValues.append(PointEntry(value: Int(BleManager.Ble.peripheralData[i]), label: ""))
+                }
+                
+                lineChart.dataEntries = newChartValues
             case "SelectedBleConnected":
                 mafDataConnectButton.setTitle("Disconnect", for: .normal)
                 mafDataReadButton.isEnabled = true
@@ -203,7 +203,7 @@ class ViewController: UIViewController, ChartViewDelegate {
             }
         }
     }
-    
+/*
     private func xAxisLabelCountCalc(count: Int) -> Int {
         
         switch count {
@@ -218,9 +218,9 @@ class ViewController: UIViewController, ChartViewDelegate {
             
             return count % 10
         }
-    }
+    } */
 }
-
+/*
 class LineChartDataSetValueFormatter: IValueFormatter {
     func stringForValue(_ value: Double, entry: ChartDataEntry, dataSetIndex: Int, viewPortHandler: ViewPortHandler?) -> String {
         return String(Int(value))
@@ -231,4 +231,5 @@ class LineChartViewAxisValueFormatter: IAxisValueFormatter {
     func stringForValue(_ value: Double, axis: AxisBase?) -> String {
         return String(Int(value))
     }
-}
+} */
+

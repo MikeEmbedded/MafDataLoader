@@ -7,9 +7,9 @@
 
 import UIKit
 import Charts
-
+/*
 open class MyyyyLineChartView: LineChartView {
- /*   internal func initialize1() {
+    internal func initialize1() {
         super.initialize()
         let pan = UIPanGestureRecognizer(target: self, action: #selector(lineChartGestureRecognizer))
         self.addGestureRecognizer(pan)
@@ -29,7 +29,7 @@ open class MyyyyLineChartView: LineChartView {
             print("pann default")
         }
         
-    }*/
+    }
 
 }
-
+*/

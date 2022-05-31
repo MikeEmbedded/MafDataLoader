@@ -1,4 +1,4 @@
-//
+///
 //  MyLineChart.swift
 //  MafDataLoader
 //
@@ -8,7 +8,7 @@
 import UIKit
 
 struct PointEntry {
-    let value: Int
+    var value: Int
     let label: String
 }
 
@@ -22,7 +22,6 @@ extension PointEntry: Comparable {
 }
 
 class MyNewLineChart: UIView {
-    
     /// gap between each point
     let lineGap: CGFloat = 60.0
     
@@ -33,7 +32,7 @@ class MyNewLineChart: UIView {
     let bottomSpace: CGFloat = 40.0
     
     /// The top most horizontal line in the chart will be 10% higher than the highest value in the chart
-    let topHorizontalLine: CGFloat = 110.0 / 100.0
+    let topHorizontalLine: CGFloat = 100.0 / 100.0
     
     var isCurved: Bool = false
 
@@ -44,10 +43,10 @@ class MyNewLineChart: UIView {
     var showDots: Bool = false
 
     /// Dot inner Radius
-    var innerRadius: CGFloat = 8
+    var innerRadius: CGFloat = 0
 
     /// Dot outer Radius
-    var outerRadius: CGFloat = 12
+    var outerRadius: CGFloat = 20
     
     var dataEntries: [PointEntry]? {
         didSet {
@@ -62,7 +61,8 @@ class MyNewLineChart: UIView {
     private let gradientLayer: CAGradientLayer = CAGradientLayer()
     
     /// Contains dataLayer and gradientLayer
-    private let mainLayer: CALayer = CALayer()
+//    private let mainLayer: CALayer = CALayer()
+    private let mainLayer: UIView = UIView()
     
     /// Contains mainLayer and label for each data entry
     private let scrollView: UIScrollView = UIScrollView()
@@ -89,8 +89,9 @@ class MyNewLineChart: UIView {
     }
     
     private func setupView() {
-        mainLayer.addSublayer(dataLayer)
-        scrollView.layer.addSublayer(mainLayer)
+        mainLayer.layer.addSublayer(dataLayer)
+    //    scrollView.layer.addSublayer(mainLayer)
+        scrollView.addSubview(mainLayer)
         
         gradientLayer.colors = [#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.7).cgColor, UIColor.clear.cgColor]
         scrollView.layer.addSublayer(gradientLayer)
@@ -108,8 +109,8 @@ class MyNewLineChart: UIView {
             gradientLayer.frame = dataLayer.frame
             dataPoints = convertDataEntriesToPoints(entries: dataEntries)
             gridLayer.frame = CGRect(x: 0, y: topSpace, width: self.frame.width, height: mainLayer.frame.height - topSpace - bottomSpace)
-            if showDots { drawDots() }
             clean()
+            if showDots { drawDots() }
             drawHorizontalLines()
             if isCurved {
                 drawCurvedChart()
@@ -119,6 +120,8 @@ class MyNewLineChart: UIView {
             maskGradientLayer()
             drawLables()
         }
+        
+
     }
     
     /**
@@ -148,6 +151,8 @@ class MyNewLineChart: UIView {
         if let dataPoints = dataPoints,
             dataPoints.count > 0,
             let path = createPath() {
+            
+            dataLayer.sublayers?.removeAll()
             
             let lineLayer = CAShapeLayer()
             lineLayer.path = path.cgPath
@@ -234,7 +239,7 @@ class MyNewLineChart: UIView {
                 textLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
                 textLayer.fontSize = 11
                 textLayer.string = dataEntries[i].label
-                mainLayer.addSublayer(textLayer)
+                mainLayer.layer.addSublayer(textLayer)
             }
         }
     }
@@ -248,88 +253,160 @@ class MyNewLineChart: UIView {
         }
         
         var gridValues: [CGFloat]? = nil
-        if dataEntries.count < 4 && dataEntries.count > 0 {
-            gridValues = [0, 1]
-        } else if dataEntries.count >= 4 {
-            gridValues = [0, 0.25, 0.5, 0.75, 1]
-        }
-        if let gridValues = gridValues {
-            for value in gridValues {
-                let height = value * gridLayer.frame.size.height
-                
-                let path = UIBezierPath()
-                path.move(to: CGPoint(x: 0, y: height))
-                path.addLine(to: CGPoint(x: gridLayer.frame.size.width, y: height))
-                
-                let lineLayer = CAShapeLayer()
-                lineLayer.path = path.cgPath
-                lineLayer.fillColor = UIColor.clear.cgColor
-                lineLayer.strokeColor = #colorLiteral(red: 0.2784313725, green: 0.5411764706, blue: 0.7333333333, alpha: 1).cgColor
-                lineLayer.lineWidth = 0.5
-                if (value > 0.0 && value < 1.0) {
-                    lineLayer.lineDashPattern = [4, 4]
+        if let max = dataEntries.max()?.value, let min = dataEntries.min()?.value {
+            if dataEntries.count < 4 && dataEntries.count > 0 || (max - min) < 4 {
+                gridValues = [0, 1]
+            } else if dataEntries.count >= 4 {
+                gridValues = [0, 0.25, 0.5, 0.75, 1]
+            }
+            if let gridValues = gridValues {
+                for value in gridValues {
+                    let height = value * gridLayer.frame.size.height
+                    
+                    let path = UIBezierPath()
+                    path.move(to: CGPoint(x: 0, y: height))
+                    path.addLine(to: CGPoint(x: gridLayer.frame.size.width, y: height))
+                    
+                    let lineLayer = CAShapeLayer()
+                    lineLayer.path = path.cgPath
+                    lineLayer.fillColor = UIColor.clear.cgColor
+                    lineLayer.strokeColor = #colorLiteral(red: 0.2784313725, green: 0.5411764706, blue: 0.7333333333, alpha: 1).cgColor
+                    lineLayer.lineWidth = 0.5
+                    if (value > 0.0 && value < 1.0) {
+                        lineLayer.lineDashPattern = [4, 4]
+                    }
+                    
+                    gridLayer.addSublayer(lineLayer)
+                    
+                    var minMaxGap:CGFloat = 0
+                    var lineValue:Int = 0
+                   // if let max = dataEntries.max()?.value,
+                    //    let min = dataEntries.min()?.value {
+                        minMaxGap = CGFloat(max - min) * topHorizontalLine
+                        lineValue = Int((1-value) * minMaxGap) + Int(min)
+                   // }
+                    
+                    let textLayer = CATextLayer()
+                    textLayer.frame = CGRect(x: 4, y: height, width: 50, height: 16)
+                    textLayer.foregroundColor = #colorLiteral(red: 0.5019607843, green: 0.6784313725, blue: 0.8078431373, alpha: 1).cgColor
+                    textLayer.backgroundColor = UIColor.clear.cgColor
+                    textLayer.contentsScale = UIScreen.main.scale
+                    textLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
+                    textLayer.fontSize = 12
+                    textLayer.string = "\(lineValue)"
+                    
+                    gridLayer.addSublayer(textLayer)
                 }
-                
-                gridLayer.addSublayer(lineLayer)
-                
-                var minMaxGap:CGFloat = 0
-                var lineValue:Int = 0
-                if let max = dataEntries.max()?.value,
-                    let min = dataEntries.min()?.value {
-                    minMaxGap = CGFloat(max - min) * topHorizontalLine
-                    lineValue = Int((1-value) * minMaxGap) + Int(min)
-                }
-                
-                let textLayer = CATextLayer()
-                textLayer.frame = CGRect(x: 4, y: height, width: 50, height: 16)
-                textLayer.foregroundColor = #colorLiteral(red: 0.5019607843, green: 0.6784313725, blue: 0.8078431373, alpha: 1).cgColor
-                textLayer.backgroundColor = UIColor.clear.cgColor
-                textLayer.contentsScale = UIScreen.main.scale
-                textLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
-                textLayer.fontSize = 12
-                textLayer.string = "\(lineValue)"
-                
-                gridLayer.addSublayer(textLayer)
             }
         }
     }
     
     private func clean() {
-        mainLayer.sublayers?.forEach({
+   /*     mainLayer.sublayers?.forEach({
             if $0 is CATextLayer {
                 $0.removeFromSuperlayer()
             }
+            
+            if $0 is DotCALayer {
+                $0.removeFromSuperlayer()
+            }
+        }) */
+        mainLayer.subviews.forEach({
+            if $0 is DotCALayer {
+                $0.removeFromSuperview()
+            }
         })
+   /*     mainLayer.layer.sublayers?.forEach({
+            if $0 is CATextLayer {
+                $0.removeFromSuperlayer()
+            }
+        })*/
         dataLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
         gridLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
     }
-    /**
+    /*
      Create Dots on line points
      */
     private func drawDots() {
-        var dotLayers: [DotCALayer] = []
         if let dataPoints = dataPoints {
-            for dataPoint in dataPoints {
+            for i in 0..<dataPoints.count {
+                let dataPoint = dataPoints[i]
                 let xValue = dataPoint.x - outerRadius/2
-                let yValue = (dataPoint.y + lineGap) - (outerRadius * 2)
+                let yValue = (dataPoint.y + lineGap) - (outerRadius * 2) - 2
                 let dotLayer = DotCALayer()
                 dotLayer.dotInnerColor = UIColor.white
                 dotLayer.innerRadius = innerRadius
-                dotLayer.backgroundColor = UIColor.white.cgColor
-                dotLayer.cornerRadius = outerRadius / 2
+/*                dotLayer.backgroundColor = UIColor.white.cgColor
+                dotLayer.cornerRadius = outerRadius / 2 */
+                dotLayer.backgroundColor = UIColor.white
+                dotLayer.layer.cornerRadius = outerRadius / 2
+             //   dotLayer.labelText = "\(dataEntries?[i].value ?? 0)"
+                dotLayer.setLabelText(text: "\(dataEntries?[i].value ?? 0)")
+                dotLayer.dataPointIndex = i
+
                 dotLayer.frame = CGRect(x: xValue, y: yValue, width: outerRadius, height: outerRadius)
-                dotLayers.append(dotLayer)
 
-                mainLayer.addSublayer(dotLayer)
+                mainLayer.addSubview(dotLayer)
 
-                if animateDots {
+            /*    if animateDots {
                     let anim = CABasicAnimation(keyPath: "opacity")
                     anim.duration = 1.0
                     anim.fromValue = 0
                     anim.toValue = 1
                     dotLayer.add(anim, forKey: "opacity")
+                } */
+            }
+        }
+        
+        mainLayer.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan)))
+    }
+    
+    private var previousTouch: CGPoint!
+    private var isDdotCaptured: Bool = false
+    private var dotCaptured: DotCALayer!
+    
+    @objc func handlePan(gesture: UIPanGestureRecognizer) {
+        let location = gesture.location(in: mainLayer)
+
+        if !isDdotCaptured {
+            for dot in mainLayer.subviews {
+                if dot.frame.contains(location) {
+                    isDdotCaptured = true
+                    previousTouch = location
+                    dotCaptured = (dot as! DotCALayer)
                 }
             }
+        } else {
+            if (location.y > (lineGap - (outerRadius * 2) - 2)) && (location.y < (mainLayer.frame.height - dotCaptured.frame.height  - bottomSpace/2 - 8)) {
+                if let prevLoc = previousTouch {
+                    
+                    if let max = dataEntries?.max()?.value, let min = dataEntries?.min()?.value {
+                        let minMaxRange: CGFloat = CGFloat(max - min) * topHorizontalLine
+                        let value = Int(round((1 - (dotCaptured.frame.origin.y - lineGap + (outerRadius * 2) + 2) / dataLayer.frame.height) * minMaxRange + CGFloat(min)))
+                        dotCaptured.setLabelText(text: "\(value)")
+                        
+
+                        dataEntries?[dotCaptured.dataPointIndex].value = value
+                    }
+                    
+                    dotCaptured.frame = dotCaptured.frame.offsetBy(dx: 0, dy: location.y - prevLoc.y)
+                    
+                    dataPoints?[dotCaptured.dataPointIndex].y = dotCaptured.frame.origin.y - lineGap + (outerRadius * 2) + 2
+                    
+                    if isCurved {
+                        drawCurvedChart()
+                    } else {
+                        drawChart()
+                    }
+                    maskGradientLayer()
+                }
+                previousTouch = location
+             }
+        }
+        
+        if gesture.state == .ended {
+            isDdotCaptured = false
+            previousTouch = nil
         }
     }
 }
@@ -401,31 +478,52 @@ class CurveAlgorithm {
 /**
  * DotCALayer
  */
-class DotCALayer: CALayer {
+class DotCALayer: UIView {
 
     var innerRadius: CGFloat = 8
     var dotInnerColor = UIColor.black
+    var labelText: String = ""
+    var dataPointIndex = 0
 
-    override init() {
-        super.init()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
     }
-
-    override init(layer: Any) {
-        super.init(layer: layer)
+    
+    convenience init() {
+        self.init(frame: CGRect.zero)
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-
-    override func layoutSublayers() {
-        super.layoutSublayers()
+ 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.layer.sublayers?.removeAll()
+        
+        super.layoutSubviews()
         let inset = self.bounds.size.width - innerRadius
         let innerDotLayer = CALayer()
         innerDotLayer.frame = self.bounds.insetBy(dx: inset/2, dy: inset/2)
         innerDotLayer.backgroundColor = dotInnerColor.cgColor
         innerDotLayer.cornerRadius = innerRadius / 2
-        self.addSublayer(innerDotLayer)
+        self.layer.addSublayer(innerDotLayer)
+        
+        let textLayer = CATextLayer()
+        textLayer.frame = CGRect(x: -20, y: 0, width: 50, height: 16)
+        textLayer.foregroundColor = #colorLiteral(red: 0.5019607843, green: 0.6784313725, blue: 0.8078431373, alpha: 1).cgColor
+        textLayer.backgroundColor = UIColor.clear.cgColor
+        textLayer.contentsScale = UIScreen.main.scale
+        textLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
+        textLayer.fontSize = 12
+        textLayer.string = labelText
+        self.layer.addSublayer(textLayer)
     }
-
+    
+    func setLabelText(text: String) {
+        labelText = text
+        self.setNeedsLayout()
+    }
 }
