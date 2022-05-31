@@ -156,7 +156,13 @@ class BleManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     }
     
     func peripheralRead() {
-        
+        if isPeripheralConnected {
+            guard let dataToWrite = String(UnicodeScalar(UInt8(0xAA))).data(using: .windowsCP1251) else {
+                return
+            }
+            
+            selectedPeripheral?.writeValue(dataToWrite, for: selectedCharacteristic, type: .withoutResponse)
+        }
     }
     
     func peripheralWrite(string: String) {
